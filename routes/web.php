@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+// use App\Providers\RouteServiceProvider;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// RouteServiceProvider::registerRoutes('Web');
