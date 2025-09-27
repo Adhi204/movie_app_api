@@ -1,5 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\Api\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 
 LoginController::routes();

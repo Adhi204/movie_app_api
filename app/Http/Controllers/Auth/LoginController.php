@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Api;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\Auth\LoginResource;
 use App\Library\Interfaces\Routable;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -20,7 +21,7 @@ class LoginController extends Controller implements HasMiddleware, Routable
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum')
+            new Middleware('auth:sanctum', except: ['login'])
         ];
     }
 
@@ -47,7 +48,7 @@ class LoginController extends Controller implements HasMiddleware, Routable
         $user = Auth::user();
 
         return response()->json([
-            'user' => $user->toResource()
+            'user' => new LoginResource($user),
         ]);
     }
 }
