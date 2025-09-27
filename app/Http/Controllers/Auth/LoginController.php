@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Auth\GenerateToken;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\Auth\LoginResource;
 use App\Library\Interfaces\Routable;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -47,8 +47,11 @@ class LoginController extends Controller implements HasMiddleware, Routable
 
         $user = Auth::user();
 
+        $token = GenerateToken::run($user);
+
         return response()->json([
-            'user' => new LoginResource($user),
+            'token' => $token,
+            'user' => $user->toResource()
         ]);
     }
 }
