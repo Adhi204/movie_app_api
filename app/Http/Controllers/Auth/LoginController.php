@@ -6,6 +6,7 @@ use App\Actions\Auth\GenerateToken;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Library\Interfaces\Routable;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,7 @@ class LoginController extends Controller implements HasMiddleware, Routable
     public static function routes(): void
     {
         Route::post('login', [self::class, 'login']);
+        Route::get('logout', [self::class, 'logout']);
     }
 
     public function login(LoginRequest $request)
@@ -53,5 +55,12 @@ class LoginController extends Controller implements HasMiddleware, Routable
             'token' => $token,
             'user' => $user->toResource()
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+        return response()->json(['title' => 'Logout Successful', 'message' => 'You have been logged out.']);
     }
 }
