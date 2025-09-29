@@ -16,14 +16,16 @@ return new class extends Migration
 
             $table->foreignId('user_id')
                 ->constrained()
-                ->onDelete('cascade')->nullable();
+                ->onDelete('cascade');
 
             $table->foreignId('movie_id')
                 ->references('id')->on('movies')
                 ->constrained()
-                ->onDelete('cascade')->nullable();
+                ->onDelete('cascade');
 
             $table->timestamps();
+
+            $table->unique(['user_id', 'movie_id']);
         });
     }
 

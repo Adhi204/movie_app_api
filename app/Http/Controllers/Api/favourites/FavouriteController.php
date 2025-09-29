@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\favourites;
+namespace App\Http\Controllers\Api\favourites;
 
 use App\Http\Controllers\Controller;
 use App\Library\Interfaces\Routable;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Favourite extends Model
 {
@@ -28,4 +29,12 @@ class Favourite extends Model
             'updated_at' => 'immutable_datetime',
         ];
     }
+
+    /**Relationship */
+    /**User */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }
