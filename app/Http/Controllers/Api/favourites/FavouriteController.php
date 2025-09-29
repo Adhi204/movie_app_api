@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\favourites;
 
 use App\Http\Controllers\Controller;
 use App\Library\Interfaces\Routable;
+use App\Models\Favourite;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -43,6 +44,14 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
 
     public function index(Request $request)
     {
-        
+        $user = $request->user();
+
+        $favourite = Favourite::where('user_id', $user->id)
+            ->with('user')
+            ->get();
+
+        return response()->json([
+            'favourite' => $favourite->toResourceCollection(),
+        ]);
     }
 }
