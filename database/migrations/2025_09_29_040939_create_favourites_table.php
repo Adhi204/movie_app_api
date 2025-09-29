@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('favourites', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 50)->nullable();
-            $table->string('year', 10)->nullable();
-            $table->text('description');
+            $table->string('title', 50);
+            $table->string('year', 10);
+            $table->text('description')->nullable();
             $table->string('poster', 50)->nullable();
-            $table->integer('like_count')->nullable();
+            $table->integer('like_count');
             $table->timestamps();
         });
     }
