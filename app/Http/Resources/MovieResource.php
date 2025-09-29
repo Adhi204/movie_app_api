@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class FavouriteResource extends JsonResource
+class MovieResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

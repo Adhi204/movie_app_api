@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Favourite>
  */
-class FavouriteFactory extends Factory
+class MovieFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class FavouriteFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
+            // 'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
             'title' => fake()->title(),
             'year' => fake()->year(),
             'like_count' => fake()->numberBetween(1, 100),

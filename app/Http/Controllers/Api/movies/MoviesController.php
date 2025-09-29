@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Api\movies;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\movies\CreateFavouriteRequest;
-use App\Http\Resources\FavouriteResource;
+use App\Http\Requests\movies\CreateMovieRequest;
+use App\Http\Requests\movies\UpdateMovieRequest;
 use App\Library\Interfaces\Routable;
-use App\Models\Favourite;
-use App\Models\User;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 
-class FavouriteController extends Controller implements HasMiddleware, Routable
+class MoviesController extends Controller implements HasMiddleware, Routable
 {
     /**
      * Define the middleware that should be applied to routes in this controller.
@@ -39,26 +37,27 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
      */
     public static function routes(): void
     {
-        Route::post('index', [self::class, 'index']);
+        // Route::post('index', [self::class, 'index']);
         Route::post('create', [self::class, 'create']);
+        Route::post('{movie}/update', [self::class, 'update']);
     }
 
-    public function index(Request $request)
-    {
-        $searchFilters = $request->only('id', 'title', 'year');
+    // public function index(Request $request)
+    // {
+    //     $searchFilters = $request->only('id', 'title', 'year');
 
-        $favourites  = Favourite::query()
-            ->applyFilters($searchFilters)
-            ->get();
+    //     $favourites  = Favourite::query()
+    //         ->applyFilters($searchFilters)
+    //         ->get();
 
-        return FavouriteResource::Collection($favourites);
-    }
+    //     return FavouriteResource::Collection($favourites);
+    // }
 
-    public function create(CreateFavouriteRequest $request)
+    public function create(CreateMovieRequest $request)
     {
         $user = $request->user();
 
-        $movie = Favourite::make([
+        $movie = Movie::make([
             'user_id' => $user->id,
             'title' => $request->safe()->title,
             'year' => $request->safe()->year,
@@ -78,5 +77,28 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
             'message' => "Movie created successfully",
             'movie' => $movie->toResource(),
         ], 200);
+    }
+
+    public function update(UpdateMovieRequest $request, Movie $movie)
+    {
+        $movie->user_id = $request->user()->id;
+
+        $request->safe()->title && $movie->title = $request->safe()->title;
+        $request->safe()->year && $movie->year = $request->safe()->year;
+        $request->safe()->description && $movie->description = $request->safe()->description;
+
+        $request->safe()->delete_poster && $movie->deletePoster();
+
+        if ($request->hasFile('poster')) {
+            $movie->saveImage($request->file('poster'));
+        }
+        if ($movie->isDirty()) {
+            $movie->update();
+        }
+        return response()->json([
+            'title' => 'Movie updated',
+            'message' => "Movie updated successfully",
+            'movie' => $movie->toResource(),
+        ]);
     }
 }

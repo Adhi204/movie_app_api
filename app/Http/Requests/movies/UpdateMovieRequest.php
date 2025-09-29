@@ -4,7 +4,7 @@ namespace App\Http\Requests\movies;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateFavouriteRequest extends FormRequest
+class UpdateMovieRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,11 @@ class CreateFavouriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:50'],
-            'year' => ['required', 'string', 'max:4'],
+            'title' => ['nullable', 'string', 'max:50'],
+            'year' => ['nullable', 'string', 'max:4'],
             'description' => ['nullable', 'string'],
             'poster' => ['nullable', 'image', 'max:1024', 'mimetypes:image/jpeg,image/png,image/gif,image/webp'],
+            'delete_poster' => ['nullable', 'boolean'],
         ];
     }
 }
