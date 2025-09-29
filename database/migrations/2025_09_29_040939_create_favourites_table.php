@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('favourites', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')
+                ->references('id')->on('users')
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->string('title', 50);
             $table->string('year', 10);
             $table->text('description')->nullable();

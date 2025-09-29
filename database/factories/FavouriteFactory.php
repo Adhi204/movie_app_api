@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class FavouriteFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
             'title' => fake()->title(),
             'year' => fake()->year(),
             'like_count' => fake()->numberBetween(1, 100),

@@ -16,6 +16,7 @@ class Favourite extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'user_id',
         'title',
         'year',
         'description',
