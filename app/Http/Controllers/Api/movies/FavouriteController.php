@@ -58,7 +58,7 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
     {
         $user = $request->user();
 
-        $favourites = Favourite::create([
+        $movie = Favourite::make([
             'user_id' => $user->id,
             'title' => $request->safe()->title,
             'year' => $request->safe()->year,
@@ -67,10 +67,16 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
             'like_count' => 0,
         ]);
 
+        if ($request->hasFile('poster')) {
+            $movie->savePoster($request->file('poster'));
+        }
+
+        $movie->save();
+
         return response()->json([
             'title' => 'Movie created',
             'message' => "Movie created successfully",
-            'location' => $favourites->toResource(),
+            'movie' => $movie->toResource(),
         ], 200);
     }
 }

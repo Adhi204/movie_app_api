@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('title', 50);
             $table->string('year', 10);
             $table->text('description')->nullable();
-            $table->string('poster', 50)->nullable();
+            $table->string('poster', 1024)->nullable();
             $table->integer('like_count');
             $table->timestamps();
         });

@@ -25,7 +25,7 @@ class CreateFavouriteRequest extends FormRequest
             'title' => ['required', 'string', 'max:50'],
             'year' => ['required', 'string', 'max:4'],
             'description' => ['nullable', 'string'],
-            'poster' => ['nullable', 'string'],
+            'poster' => ['nullable', 'image', 'max:1024', 'mimetypes:image/jpeg,image/png,image/gif,image/webp'],
         ];
     }
 }
