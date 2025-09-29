@@ -37,9 +37,13 @@ class MoviesController extends Controller implements HasMiddleware, Routable
      */
     public static function routes(): void
     {
-        Route::post('create', [self::class, 'create']);
-        Route::post('{movie}/update', [self::class, 'update']);
-        Route::post('{movie}/delete', [self::class, 'destroy']);
+        Route::prefix('movies')
+            ->controller(self::class)
+            ->group(function () {
+                Route::post('', [self::class, 'create']);
+                Route::post('{movie}', [self::class, 'update']);
+                Route::post('{movie}/delete', [self::class, 'destroy']);
+            });
     }
 
     public function create(CreateMovieRequest $request)
