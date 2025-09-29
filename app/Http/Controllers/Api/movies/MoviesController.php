@@ -37,21 +37,9 @@ class MoviesController extends Controller implements HasMiddleware, Routable
      */
     public static function routes(): void
     {
-        // Route::post('index', [self::class, 'index']);
         Route::post('create', [self::class, 'create']);
         Route::post('{movie}/update', [self::class, 'update']);
     }
-
-    // public function index(Request $request)
-    // {
-    //     $searchFilters = $request->only('id', 'title', 'year');
-
-    //     $favourites  = Favourite::query()
-    //         ->applyFilters($searchFilters)
-    //         ->get();
-
-    //     return FavouriteResource::Collection($favourites);
-    // }
 
     public function create(CreateMovieRequest $request)
     {
