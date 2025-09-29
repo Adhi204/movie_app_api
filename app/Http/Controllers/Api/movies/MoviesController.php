@@ -70,7 +70,14 @@ class MoviesController extends Controller implements HasMiddleware, Routable
 
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
-        $movie->user_id = $request->user()->id;
+        $user = $request->user();
+
+        if ($movie->user_id !== $user->id) {
+            return response()->json([
+                'title' => 'You Cannot Update',
+                'message' => "You are not authorized to update this movie",
+            ]);
+        }
 
         $request->safe()->title && $movie->title = $request->safe()->title;
         $request->safe()->year && $movie->year = $request->safe()->year;
@@ -96,7 +103,7 @@ class MoviesController extends Controller implements HasMiddleware, Routable
         $user = $request->user();
         if ($movie->user_id !== $user->id) {
             return response()->json([
-                'title' => 'Invalid',
+                'title' => 'You Cannot Delete',
                 'message' => "You are not authorized to delete this movie",
             ]);
         }
