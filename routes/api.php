@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\movies\FavouriteController;
+use App\Providers\RouteServiceProvider;
 
-LoginController::routes();
-FavouriteController::routes();
+RouteServiceProvider::registerRoutes('Api');

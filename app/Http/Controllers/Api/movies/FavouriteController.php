@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\movies;
+namespace App\Http\Controllers\Api\movies;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FavouriteResource;
@@ -22,7 +22,9 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum', except: ['login'])
+            new Middleware(
+                'auth:sanctum'
+            )
         ];
     }
 
