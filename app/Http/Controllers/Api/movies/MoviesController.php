@@ -39,6 +39,7 @@ class MoviesController extends Controller implements HasMiddleware, Routable
     {
         Route::post('create', [self::class, 'create']);
         Route::post('{movie}/update', [self::class, 'update']);
+        Route::post('{movie}/delete', [self::class, 'destroy']);
     }
 
     public function create(CreateMovieRequest $request)
@@ -87,6 +88,24 @@ class MoviesController extends Controller implements HasMiddleware, Routable
             'title' => 'Movie updated',
             'message' => "Movie updated successfully",
             'movie' => $movie->toResource(),
+        ]);
+    }
+
+    public function destroy(Request $request, Movie $movie)
+    {
+        $user = $request->user();
+        if ($movie->user_id !== $user->id) {
+            return response()->json([
+                'title' => 'Invalid',
+                'message' => "You are not authorized to delete this movie",
+            ]);
+        }
+
+        $movie->deletePoster();
+        $movie->delete();
+        return response()->json([
+            'title' => 'Movie deleted',
+            'message' => "Movie deleted successfully",
         ]);
     }
 }
