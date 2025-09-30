@@ -39,6 +39,9 @@ class LoginController extends Controller implements HasMiddleware, Routable
         Route::get('logout', [self::class, 'logout']);
     }
 
+    /** 
+     * * Handle a login request to the application.
+     * */
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('username', 'password');
@@ -57,6 +60,9 @@ class LoginController extends Controller implements HasMiddleware, Routable
         ]);
     }
 
+    /**
+     * Handle a logout request to the application.
+     * */
     public function logout(Request $request)
     {
         $user = $request->user();

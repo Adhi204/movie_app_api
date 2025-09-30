@@ -42,6 +42,9 @@ class HomeController extends Controller implements HasMiddleware, Routable
             });
     }
 
+    /**
+     * Get all movies.
+     */
     public function index(Request $request)
     {
         $searchFilters = $request->only('id', 'title', 'year');

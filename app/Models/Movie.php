@@ -95,6 +95,7 @@ class Movie extends Model
     }
 
     /**Relationship */
+    /*user */
     public function favouritedByUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'favourites')->withTimestamps();

@@ -52,6 +52,7 @@ class User extends Authenticatable
     }
 
     /*Relationship*/
+    /**movie */
     public function favouriteMovies(): BelongsToMany
     {
         return $this->belongsToMany(Movie::class, 'favourites');

@@ -46,6 +46,9 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
             });
     }
 
+    /**
+     *  Get favourites list of the authenticated user.
+     */
     public function index(Request $request)
     {
         $user = $request->user();
@@ -59,6 +62,9 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
         ]);
     }
 
+    /**
+     * add a movie to the authenticated user's favourites.
+     */
     public function addFavourite(CreateFavouriteRequest $request)
     {
         $user = $request->user();
@@ -75,6 +81,9 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
         ]);
     }
 
+    /**
+     * * remove a movie from the authenticated user's favourites list.
+     */
     public function removeFavourite(Request $request, Movie $movie)
     {
         $user = $request->user();

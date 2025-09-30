@@ -31,11 +31,13 @@ class Favourite extends Model
     }
 
     /**Relationship */
+    /**user */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**movie */
     public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);

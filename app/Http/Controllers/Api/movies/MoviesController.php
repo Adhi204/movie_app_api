@@ -46,6 +46,9 @@ class MoviesController extends Controller implements HasMiddleware, Routable
             });
     }
 
+    /**
+     * Create a new movie.
+     */
     public function create(CreateMovieRequest $request)
     {
         $user = $request->user();
@@ -72,6 +75,9 @@ class MoviesController extends Controller implements HasMiddleware, Routable
         ], 200);
     }
 
+    /**
+     *Update an existing movie.
+     */
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
         $user = $request->user();
@@ -102,6 +108,9 @@ class MoviesController extends Controller implements HasMiddleware, Routable
         ]);
     }
 
+    /**
+     * Delete an existing movie.
+     */
     public function destroy(Request $request, Movie $movie)
     {
         $user = $request->user();
