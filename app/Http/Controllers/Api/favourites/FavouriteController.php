@@ -40,7 +40,7 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
         Route::prefix('favourites')
             ->controller(self::class)
             ->group(function () {
-                Route::post('', [self::class, 'index']);
+                Route::get('', [self::class, 'index']);
                 Route::post('create', [self::class, 'addFavourite']);
                 Route::post('{movie}/remove', [self::class, 'removeFavourite']);
             });

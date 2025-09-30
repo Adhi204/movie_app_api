@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Library\Interfaces\Routable;
-use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Route;
 
-class HomeController extends Controller implements HasMiddleware, Routable
+class UserController extends Controller implements HasMiddleware, Routable
 {
     /**
      * Define the middleware that should be applied to routes in this controller.
@@ -35,24 +35,22 @@ class HomeController extends Controller implements HasMiddleware, Routable
      */
     public static function routes(): void
     {
-        Route::prefix('home')
+        Route::prefix('users')
             ->controller(self::class)
             ->group(function () {
                 Route::get('', [self::class, 'index']);
             });
     }
 
-    /**
-     * Get all movies.
-     */
     public function index(Request $request)
     {
-        $searchFilters = $request->only('id', 'title', 'year');
+        $user = $request->user();
 
-        $movies  = Movie::query()
-            ->applyFilters($searchFilters)
+        $profile = User::where('id', $user->id)
             ->get();
 
-        return $movies->toResourceCollection();
+        return response()->json([
+            'user' => $profile->toResourceCollection(),
+        ]);
     }
 }
