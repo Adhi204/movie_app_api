@@ -74,6 +74,8 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
             'movie_id' => $request->safe()->movie_id,
         ]);
 
+        $favourites->movie()->increment('like_count');
+
         return response()->json([
             'title' => 'Favourite Created',
             'message' => 'Favourite created successfully',
