@@ -19,6 +19,7 @@ class FavouriteResource extends JsonResource
             'user_id' => $this->user_id,
             'movie_id' => $this->movie_id,
 
+            'movie' => new MovieResource($this->whenLoaded('movie')),
             'user' => new UserResource($this->whenLoaded('user')),
         ];
     }

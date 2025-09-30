@@ -52,14 +52,7 @@ class User extends Authenticatable
     }
 
     /*Relationship*/
-    /**movies */
-    public function movies(): HasMany
-    {
-        return $this->hasMany(Movie::class);
-    }
-
-    /**favourites */
-    public function favourites(): BelongsToMany
+    public function favouriteMovies(): BelongsToMany
     {
         return $this->belongsToMany(Movie::class, 'favourites');
     }

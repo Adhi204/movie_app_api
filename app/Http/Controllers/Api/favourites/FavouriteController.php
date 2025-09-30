@@ -46,12 +46,12 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
     {
         $user = $request->user();
 
-        $favourite = Favourite::where('user_id', $user->id)
-            ->with('user')
+        $favourites = Favourite::with(['movie', 'user'])
+            ->where('user_id', $user->id)
             ->get();
 
         return response()->json([
-            'favourite' => $favourite->toResourceCollection(),
+            'favourite' => $favourites->toResourceCollection(),
         ]);
     }
 }

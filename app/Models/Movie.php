@@ -95,14 +95,8 @@ class Movie extends Model
     }
 
     /**Relationship */
-    /**User */
-    public function user(): BelongsTo
+    public function favouritedByUsers(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function favoritedByUsers(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'favourites');
+        return $this->belongsToMany(User::class, 'favourites')->withTimestamps();
     }
 }
