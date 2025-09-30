@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\Bookings\BookingStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Booking extends Model
 {
@@ -33,5 +35,18 @@ class Booking extends Model
             'created_at' => 'immutable_datetime',
             'updated_at' => 'immutable_datetime',
         ];
+    }
+
+    /**Relationship */
+    /**seats */
+    public function seats(): BelongsToMany
+    {
+        return $this->belongsToMany(Seat::class, 'booking_seats');
+    }
+
+    /**showtime */
+    public function showtime(): BelongsTo
+    {
+        return $this->belongsTo(Showtime::class);
     }
 }
