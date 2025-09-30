@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UpdateUserProfileRequest;
 use App\Library\Interfaces\Routable;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class UserController extends Controller implements HasMiddleware, Routable
             ->controller(self::class)
             ->group(function () {
                 Route::get('', [self::class, 'index']);
+                Route::post('update', [self::class, 'updateProfile']);
             });
     }
 
@@ -52,5 +54,23 @@ class UserController extends Controller implements HasMiddleware, Routable
         return response()->json([
             'user' => $profile->toResourceCollection(),
         ]);
+    }
+
+    public function updateProfile(UpdateUserProfileRequest $request)
+    {
+        $user = $request->user();
+
+        $request->safe()->username && $user->username = $request->safe()->username;
+        $request->safe()->email && $user->email = $request->safe()->email;
+
+        if ($user->isDirty()) {
+            $user->save();
+        }
+
+        return response()->json([
+            'title' => 'Profile Updated',
+            'message' => "User profile updated successfully",
+            'user' => $user->toResource(),
+        ], 200);
     }
 }
