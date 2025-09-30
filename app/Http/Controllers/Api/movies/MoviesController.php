@@ -40,10 +40,22 @@ class MoviesController extends Controller implements HasMiddleware, Routable
         Route::prefix('movies')
             ->controller(self::class)
             ->group(function () {
-                Route::post('', [self::class, 'create']);
+                Route::get('{movie}', [self::class, 'show']);
+                Route::post('create', [self::class, 'create']);
                 Route::post('{movie}', [self::class, 'update']);
                 Route::post('{movie}/delete', [self::class, 'destroy']);
             });
+    }
+
+
+    public function show(Request $request, Movie $movie)
+    {
+        $movie = Movie::where('id', $movie->id)
+            ->first();
+
+        return response()->json([
+            'movie' => $movie->toResource(),
+        ]);
     }
 
     /**
