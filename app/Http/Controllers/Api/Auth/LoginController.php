@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Actions\Auth\GenerateToken;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Library\Interfaces\Routable;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -22,7 +24,7 @@ class LoginController extends Controller implements HasMiddleware, Routable
     public static function middleware(): array
     {
         return [
-            new Middleware('auth:sanctum', except: ['login'])
+            new Middleware('auth:sanctum', except: ['login', 'register'])
         ];
     }
 
@@ -35,8 +37,27 @@ class LoginController extends Controller implements HasMiddleware, Routable
      */
     public static function routes(): void
     {
+        Route::post('register', [self::class, 'register']);
         Route::post('login', [self::class, 'login']);
         Route::get('logout', [self::class, 'logout']);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'username' => $request->safe()->username,
+            'email' => $request->safe()->email,
+            'password' => $request->safe()->password
+        ]);
+
+        $token = GenerateToken::run($user);
+
+        return response()->json([
+            'title' => 'Registration Successful',
+            'message' => "You have been registered successfully",
+            'user' => $user->toResource(),
+            'token' => $token,
+        ], 200);
     }
 
     /** 
