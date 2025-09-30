@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\favourites;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\favourites\CreateFavouriteRequest;
 use App\Library\Interfaces\Routable;
 use App\Models\Favourite;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -39,6 +41,8 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
             ->controller(self::class)
             ->group(function () {
                 Route::post('', [self::class, 'index']);
+                Route::post('create', [self::class, 'addFavourite']);
+                Route::post('{movie}/remove', [self::class, 'removeFavourite']);
             });
     }
 
@@ -52,6 +56,35 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
 
         return response()->json([
             'favourite' => $favourites->toResourceCollection(),
+        ]);
+    }
+
+    public function addFavourite(CreateFavouriteRequest $request)
+    {
+        $user = $request->user();
+
+        $favourites = Favourite::create([
+            'user_id' => $user->id,
+            'movie_id' => $request->safe()->movie_id,
+        ]);
+
+        return response()->json([
+            'title' => 'Favourite Created',
+            'message' => 'Favourite created successfully',
+            'favourite' => $favourites->load(['movie'])->toResource(),
+        ]);
+    }
+
+    public function removeFavourite(Request $request, Movie $movie)
+    {
+        $user = $request->user();
+        $favourite = Favourite::where('user_id', $user->id)
+            ->where('movie_id', $movie->id)
+            ->delete();
+
+        return response()->json([
+            'title' => 'Favourite Removed',
+            'message' => 'Favourite Removed successfully',
         ]);
     }
 }
