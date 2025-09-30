@@ -91,7 +91,11 @@ class FavouriteController extends Controller implements HasMiddleware, Routable
         $user = $request->user();
         $favourite = Favourite::where('user_id', $user->id)
             ->where('movie_id', $movie->id)
-            ->delete();
+            ->first();
+
+        $favourite->movie()->decrement('like_count');
+
+        $favourite->delete();
 
         return response()->json([
             'title' => 'Favourite Removed',
